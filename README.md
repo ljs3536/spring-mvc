@@ -64,3 +64,25 @@ logging.level.hello.springmvc=debug
   특히 파일로 남길 때는 일별, 특정 용량에 따라 로그를 분할하는 것도 가능하다.
 - 성능도 일반 System.out보다 좋다. (내부 버퍼링, 멀티 쓰레드 등등) 그래서 실무에서는 꼭 로그를 사용해야 한다.
 
+# /24-07-24
+## 요청 매핑
+
+### 둘다 허용
+다음 두가지 요청은 다른 URL이지만, 스프링은 다음 URL 요청들을 같은 요청으로 매핑한다.
+- 매핑 : /hello-basic
+- URL 요청 : /hello-basic, /hello-baisc/
+
+### HTTP메서드
+@RequestMapping에 method 속성으로 HTTP메서드를 지정하지 않으면 HTTP 메서드와 무관하게 호출된다.
+모두 허용 GET, HEAD, POST, PUT, PATCH, DELETE
+
+### PathVariable(경로 변수) 사용
+최근 HTTP API는 다음과 같이 리소스 경로에 식별자를 넣는 스타일을 선호한다.
+- /mapping/userA
+- /users/1
+
+- @RequestMapping은 URL 경로를 템플릿화 할 수 있는데, @PathVariable을 사용하면 매칭 되는 부분을 편리하게 조회할 수 있다.
+- @PathVariable의 이름과 파라미터 이름이 같으면 생략할 수 있다.
+
+### PathVariable 사용 - 다중
+
