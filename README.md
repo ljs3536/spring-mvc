@@ -290,4 +290,41 @@ age=abc처럼 숫자가 들어가야 할 곳에 문자를 넣으면 BindExceptio
 @ResponseBody를 사용하면 응답 결과를 HTTP 메시지 바디에 직접 담아서 전달할 수 있다.
 물론 이 경우에도 view를 사용하지 않는다.
 
+# 24-07-31
+## HTTP 요청 메시지 - JSON
+
+### requestBodyJsonV3 - @RequestBody 객체 변환
+#### @RequestBody 객체 파라미터 
+- @RequestBody HelloData data
+- @RequestBody에 직접 만든 객체를 지정할 수 있다.
+
+HttpEntity, @RequestBody를 사용하면 HTTP 메시지 컨버터가 HTTP 메시지 바디의 내용을 우리가 원하는 문자나 객체 등으로 변환해준다.
+HTTP 메시지 컨버터는 문자 뿐만 아니라 JSON도 객체로 변환해주는데, 우리가 방금 V2에서 했던 작업을 대신 처리해준다.
+자세한 내용은 뒤에 HTTP 메시지 컨버터에서 다룬다.
+
+@RequestBody는 생략 불가능
+@ModelAttribute에서 학습한 내용을 떠올려보자.
+
+스프링은 @ModelAttribute, @RequestParam 해당 생략 시 다음과 같은 규칙을 적용한다.
+- String, int, Integer 같은 단순 타입 = @RequestParam
+- 나머지 = @ModelAttribute (argument resolver로 지정해둔 타입 외)
+
+따라서 이 경우 HelloData에 @RequestBody를 생략하면 @ModelAttribute가 적용되어 버린다.
+HelloData data -> @ModelAttribute HelloData data
+따라서 생략하면 HTTP 메시지 바디가 아니라 요청 파라미터를 처리하게 된다.
+
+### 주의
+HTTP 요청 시에 content-type이 application/json인지 꼭! 확인해야 한다. 
+그래야 JSON을 처리할 수 있는 HTTP 메시지 컨버터가 실행된다.
+
+#### @ResponseBOdy
+응답의 경우에도 @ResponseBody를 사용하면 해당 객체를 HTTP 메시지 바디에 직접 넣어줄 수 있다.
+물론 이 경우에도 HttpEntity를 사용해도 된다.
+
+- @RequestBody 요청
+  - JSON요청 -> HTTP 메시지 컨버터 -> 객체
+- @ResponseBody 응답
+  - 객체 -> HTTP 메시지 컨버터 -> JSON응답
+
+
 
